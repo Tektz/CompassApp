@@ -2,6 +2,7 @@ package com.masoud.compassapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -12,7 +13,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SensorEventListener{
    private ImageView image;
    private float currentDegree = 0f;
    private SensorManager mSensorManager;
@@ -23,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        image = (ImageView) findViewById(R.id.imageViewCompass);
-        tvHeading = (TextView) findViewById(R.id.tvHeading);
+        image = findViewById(R.id.imageViewCompass);
+        tvHeading = findViewById(R.id.tvHeading);
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
     }
     @Override
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         mSensorManager.unregisterListener((SensorEventListener) this);
     }
 
+    @SuppressLint("SetTextI18n")
     public void onSensorChanged(SensorEvent event){
         float degree = Math.round(event.values[0]);
         tvHeading.setText("Heading: " + degree + " degrees");
@@ -51,5 +53,9 @@ public class MainActivity extends AppCompatActivity {
         currentDegree = -degree;
     }
 
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
+    }
 
 }
